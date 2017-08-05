@@ -1,6 +1,7 @@
 package com.mmall.common;
 
 import net.sf.jsqlparser.schema.Server;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.Serializers;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -46,7 +47,8 @@ public class ServerResponse<T>  implements Serializable {
         return this.data;
     }
 
-
+    @JsonIgnore
+    //使之不在json序列化结果当中
     public boolean isSuccess() {
         return this.status == ResponseCode.SUCCESS.getCode();
     }
