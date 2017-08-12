@@ -237,7 +237,13 @@ public class UserServiceImple implements IUserService {
 
         int updateCount = userMapper.updateByPrimaryKeySelective(updateUser);
         if (updateCount>0){
-            return ServerResponse.createBySuccess("更新个人信息成功",updateUser);
+            ServerResponse<User> response = this.getInformation(user.getId());
+            if (response.isSuccess()){
+                return ServerResponse.createBySuccess("更新个人信息成功",response.getData());
+            }else{
+                return response;
+            }
+
         }
 
         return ServerResponse.createByErrorMessage("更新失败");
