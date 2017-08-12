@@ -23,6 +23,20 @@ public class User {
 
     private Date updateTime;
 
+    @Override
+    public String toString(){
+        return "id="+this.id+"\n"+
+                "username="+this.username+"\n"+
+                "password="+this.password+"\n"+
+                "email="+this.email+"\n"+
+                "phone="+this.phone+"\n"+
+                "question="+this.question+"\n"+
+                "answer="+this.answer+"\n"+
+                "role="+this.role+"\n"+
+                "createTime="+this.createTime+"\n"+
+                "updateTime="+this.updateTime+"\n";
+    }
+
     public User(Integer id, String username, String password, String email, String phone, String question, String answer, Integer role, Date createTime, Date updateTime) {
         this.id = id;
         this.username = username;

@@ -1,6 +1,7 @@
 package com.mmall.controller.portable;
 
 import com.mmall.common.Const;
+import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
 import com.mmall.service.IUserService;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpSession;
  * Created by Administrator on 2017/7/30.
  */
 @Controller
-@RequestMapping("/user/")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -37,6 +38,7 @@ public class UserController {
     public ServerResponse<User> login(String username, String password, HttpSession session){
 
         //service->mybatis->dao;
+        //System.out.println(session.getId());
         ServerResponse<User> response = iUserService.login(username,password);
         if (response.isSuccess()){
             session.setAttribute(Const.CURRENT_USER, response.getData());
@@ -50,10 +52,11 @@ public class UserController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "logout.do", method = RequestMethod.GET)
+    @RequestMapping(value = "logout.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> logout(HttpSession session){
         session.removeAttribute(Const.CURRENT_USER);
+        session.invalidate();
         return ServerResponse.createBySuccess();
     }
 
@@ -66,6 +69,7 @@ public class UserController {
     @RequestMapping(value = "register.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> register(User user){
+        System.out.println(user.toString());
         return iUserService.register(user);
     }
 
@@ -88,7 +92,7 @@ public class UserController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "get_user_info.do", method = RequestMethod.GET)
+    @RequestMapping(value = "get_user_info.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> getUserInfo(HttpSession session){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
@@ -163,7 +167,18 @@ public class UserController {
     }
 
 
+    /**
+     * 在登陆状态下获得用户信息
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "get_information.do", method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse<User> getInformation(HttpSession session){
-        // TODO: 2017/8/5  
+        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        if (currentUser==null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请重新登录");
+        }
+        return iUserService.getInformation(currentUser.getId());
     }
 }

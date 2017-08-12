@@ -99,6 +99,9 @@ public class UserServiceImple implements IUserService {
                     //如果email已存在，则提示邮箱已注册
                     return ServerResponse.createByErrorMessage("Email已存在");
                 }
+            }else{
+                //类型既不是username，也不是email
+                return ServerResponse.createByErrorMessage("type错误");
             }
         }else{
             return ServerResponse.createByErrorMessage("参数错误");
@@ -116,7 +119,7 @@ public class UserServiceImple implements IUserService {
     @Override
     public ServerResponse<String> forgetGetQuestion(String username) {
         ServerResponse validResponse = this.checkValid(username, Const.USERNAME);
-        if ( !validResponse.isSuccess()){
+        if ( validResponse.isSuccess()){
             //用户不存在
             return ServerResponse.createByErrorMessage("用户名不存在");
         }
@@ -238,6 +241,16 @@ public class UserServiceImple implements IUserService {
         }
 
         return ServerResponse.createByErrorMessage("更新失败");
+    }
+
+    @Override
+    public ServerResponse<User> getInformation(Integer userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        if (user == null){
+            return ServerResponse.createByErrorMessage("未找到用户信息");
+        }
+        user.setPassword("");
+        return ServerResponse.createBySuccess(user);
     }
 
 

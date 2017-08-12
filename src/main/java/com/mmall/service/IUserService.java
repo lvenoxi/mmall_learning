@@ -3,12 +3,15 @@ package com.mmall.service;
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * Created by Administrator on 2017/7/30.
  */
 public interface IUserService {
     /**
      * 登录接口
+     *
      * @param username
      * @param password
      * @return
@@ -18,6 +21,7 @@ public interface IUserService {
 
     /**
      * 注册接口
+     *
      * @param user
      * @return
      */
@@ -25,6 +29,7 @@ public interface IUserService {
 
     /**
      * 检测用户名或者eamil是否存在
+     *
      * @param str
      * @param type
      * @return
@@ -34,6 +39,7 @@ public interface IUserService {
 
     /**
      * 忘记问题调用的接口
+     *
      * @param username
      * @return
      */
@@ -41,6 +47,7 @@ public interface IUserService {
 
     /**
      * 忘记问题时，校验问题的答案
+     *
      * @param username
      * @param question
      * @param answer
@@ -50,6 +57,7 @@ public interface IUserService {
 
     /**
      * 忘记密码重置密码
+     *
      * @param username
      * @param passwordNew
      * @param forgetToken
@@ -59,6 +67,7 @@ public interface IUserService {
 
     /**
      * 登录状态下重置密码
+     *
      * @param passwordOld
      * @param passwordNew
      * @param user
@@ -68,8 +77,13 @@ public interface IUserService {
 
     /**
      * 登录状态下更新用户信息
+     *
      * @param user
      * @return
      */
     ServerResponse<User> updateInformation(User user);
+
+    ServerResponse<User> getInformation(Integer userId);
 }
+
+
